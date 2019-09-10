@@ -282,10 +282,7 @@ class ComputedPurchaseOrder(models.Model):
     @api.multi
     def _compute_package_quantity_count(self):
         for cpo in self:
-            package_quantity_count = 0
-            for line in cpo.line_ids:
-                package_quantity_count += line.purchase_qty_package
-            self.package_qty_count = package_quantity_count
+            self.package_qty_count = sum(cpo.line_ids.mapped('purchase_qty_package'))
 
     @api.multi
     def _compute_purchase_quantities_other(self, field):
